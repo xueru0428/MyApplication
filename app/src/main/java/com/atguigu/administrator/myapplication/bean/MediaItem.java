@@ -1,10 +1,12 @@
 package com.atguigu.administrator.myapplication.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by XueRU on 2017/1/8.
  */
 
-public class MediaItem {
+public class MediaItem implements Serializable{
 
     String name ;
     long duration ;

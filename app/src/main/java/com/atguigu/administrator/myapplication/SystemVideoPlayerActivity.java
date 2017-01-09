@@ -20,9 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.atguigu.administrator.myapplication.bean.MediaItem;
 import com.atguigu.administrator.myapplication.utils.Utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SystemVideoPlayerActivity extends AppCompatActivity implements View.OnClickListener {
@@ -34,6 +36,10 @@ public class SystemVideoPlayerActivity extends AppCompatActivity implements View
 
     //进度更新
     private static final int PROGRESS = 0;
+
+    //列表数据
+    private ArrayList<MediaItem> mediaItems;
+    private int position;
 
 
     private LinearLayout llTop;
@@ -244,7 +250,18 @@ public class SystemVideoPlayerActivity extends AppCompatActivity implements View
      * 设置视频播放的地址
      */
     private void setData() {
-        videoview.setVideoURI(uri);
+
+        if(mediaItems != null && mediaItems.size()>0){
+            //根据位置获取播放视频的对象
+            MediaItem mediaItem = mediaItems.get(position);
+            videoview.setVideoPath(mediaItem.getData());
+            tvName.setText(mediaItem.getName());
+        }else if(uri!= null){
+            //设置播放地址
+            videoview.setVideoURI(uri);
+            tvName.setText(uri.toString());
+        }
+
     }
 
     private void setListener() {
@@ -352,7 +369,12 @@ public class SystemVideoPlayerActivity extends AppCompatActivity implements View
      * 得到视频播放的地址
      */
     private void getData() {
+        //一个地址：从文件发起的单个播放请求
         uri = getIntent().getData();
+        //得到视频列表
+        mediaItems = (ArrayList<MediaItem>) getIntent().getSerializableExtra("videolist");
+        position = getIntent().getIntExtra("position",0);
+
     }
 
 
